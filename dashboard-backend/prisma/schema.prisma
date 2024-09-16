@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String @unique
+  password  String
+}
+
+model Customer {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String @unique
+  orders    Order[]
+}
+
+model Order {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String   @db.ObjectId
+  items      Item[]
+  status     String
+  createdAt  DateTime @default(now())
+}
+
+model Item {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  order           Order  @relation(fields: [orderId], references: [id])
+  orderId         String @db.ObjectId
+  inventoryItem   InventoryItem @relation(fields: [inventoryItemId], references: [id])  // Relation to InventoryItem
+  inventoryItemId String       @db.ObjectId
+  quantity        Int
+}
+
+model InventoryItem {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  category  String
+  quantity  Int
+  available Boolean
+  items     Item[]
+}
