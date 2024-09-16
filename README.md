@@ -41,12 +41,21 @@ To run this project
   cd dashboard-backend
   npm run dev or npm start
 ```
-2. In a new terminal start the frontend
+
+2. Start up redis for caching on the backend. Run ping to check if it is running and monitor for monitoring
+ ```bash
+  redis-server
+  redis-cli ping
+  redis-cli monitor
+```
+
+3. In a new terminal start the frontend
 ```bash
   cd dashboard-frontend
   npm run dev or npm start
 ```
-3.
+
+4. 
 Open your web browser and visit http://localhost:8080
 
 ## License
